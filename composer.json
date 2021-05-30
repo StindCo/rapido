@@ -1,0 +1,17 @@
+{
+    "name": "stindco/rapido",
+    "description": "Mini php framework based on stinder",
+    "authors": [
+        {
+            "name": "Stéphane Ngoyi",
+            "email": "sngoyi5@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "StindCo\\Rapido\\": "./src/",
+            "Autres\\": "./Autres"
+        }
+    }
+}
