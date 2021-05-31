@@ -2,7 +2,7 @@
 
 namespace StindCo\Rapido;
 
-class PipeLine
+class Pipeline
 {
     private $continue = false;
     public function __construct(Request $req, Response $res)
