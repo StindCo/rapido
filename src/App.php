@@ -9,7 +9,7 @@ class App
     protected Configs $configs;
     protected Request $request;
     protected Response $response;
-    protected PipeLine $pipeline;
+    protected Pipeline $pipeline;
     protected Middleware $middleware;
 
     public function __construct()
@@ -143,7 +143,7 @@ class App
         $this->configure($this->request);
         $this->configure($this->response);
 
-        $pipeline = (new PipeLine($this->request, $this->response))
+        $pipeline = (new Pipeline($this->request, $this->response))
             ->pipe($this->middleware)
             ->pipe($this->router);
     }

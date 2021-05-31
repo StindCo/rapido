@@ -2,7 +2,7 @@
 
 namespace StindCo\Rapido;
 
-class Router extends PipeLine
+class Router extends Pipeline
 {
     public array $routes = [];
     private array $conditions = [];
