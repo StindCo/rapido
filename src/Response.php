@@ -117,20 +117,4 @@ class Response extends Http
     public function end()
     {
     }
-
-    public function render($view, array $params, $layout = null)
-    {
-        $vuePath = $this->get_conf('views_folder');
-        $layoutPath = $this->get_conf('layouts_folder');
-        extract($params);
-        extract($this->locals->toArray());
-        if (is_null($layout)) {
-            require $vuePath . '/' . $view . '.php';
-        } else {
-            ob_start();
-            require $vuePath . '/' . $view . '.php';
-            $view_content = ob_get_clean();
-            require $layoutPath . '/' . $layout . '.php';
-        }
-    }
 }
