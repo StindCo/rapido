@@ -11,6 +11,7 @@ class App
     protected Response $response;
     protected Pipeline $pipeline;
     protected Middleware $middleware;
+    protected array $env;
 
     public function __construct()
     {
@@ -52,13 +53,27 @@ class App
         return $this->configs->getAll();
     }
 
-    public function configure($objects)
+    private function configure($objects)
     {
         foreach ($objects->configs as $key => $value) {
-            if(!is_null($this->configs->getAll()[$key])) {
+            if (!is_null($this->configs->getAll()[$key])) {
                 $objects->configs[$key] = $this->configs->getAll()[$key];
-            } 
+            }
         }
+    }
+    /*
+        ======================================================================
+                            Environnement's variables
+        ======================================================================
+    */
+    public function setVar($key, $value): self
+    {
+        $this->env[$key] = $value;
+        return $this;
+    }
+    public function getVar($key): mixed
+    {
+        return $this->env[$key];
     }
     /*
         =======================================================================
