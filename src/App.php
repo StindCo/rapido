@@ -2,9 +2,10 @@
 
 namespace StindCo\Rapido;
 
+use ArrayAccess;
 use ReflectionObject;
 
-class App
+class App implements ArrayAccess
 {
     protected Configs $configs;
     protected Request $request;
@@ -71,9 +72,25 @@ class App
         $this->env[$key] = $value;
         return $this;
     }
-    public function getVar($key): mixed
+    public function getVar($key)
     {
         return $this->env[$key];
+    }
+    public function offsetGet($offset)
+    {
+        return $this->getVar($offset);
+    }
+    public function offsetSet($offset, $value)
+    {
+        $this->setVar($offset, $value);
+    }
+    public function offsetExists($offset)
+    {
+        return is_null($this->getVar($offset));
+    }
+    public function offsetUnset($offset)
+    {
+        unset($this->env[$offset]);
     }
     /*
         =======================================================================

@@ -4,7 +4,9 @@ namespace StindCo\Rapido;
 
 class Router extends Pipeline
 {
-    public array $routes = [];
+    public array $routes = [
+        'get' => []
+    ];
     private array $conditions = [];
     private array $configs = [
         "route_mode" => "/"
@@ -42,6 +44,7 @@ class Router extends Pipeline
      */
     private function path_resolver($method, $path)
     {
+        $parameters = null;
         $urlData = explode("/", $path);
         foreach ($this->routes[$method] as $key => $value) {
             $routesData = explode("/", $key);

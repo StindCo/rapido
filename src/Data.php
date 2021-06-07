@@ -8,7 +8,7 @@ class Data implements ArrayAccess
 {
     protected $asDataError = false;
     protected array $DataErrors = [];
-    private array $DataSafeInformations = [];
+    protected array $DataSafeInformations = [];
 
     public function setErrors(array $errors): self
     {

@@ -14,7 +14,7 @@ class Request extends Http
     }
     public function get($key)
     {
-        return $this->$key;
+        return $this->DataSafeInformations[$key];
     }
 
     public function get_getDatas()
