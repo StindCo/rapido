@@ -3,7 +3,6 @@
 namespace StindCo\Rapido;
 
 use ArrayAccess;
-use ReflectionObject;
 
 class App implements ArrayAccess
 {
@@ -98,6 +97,7 @@ class App implements ArrayAccess
         ======================================================================
     */
     /**
+22
      * Add middleware 
      *
      * @param mixed $classe
