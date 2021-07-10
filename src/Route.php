@@ -10,6 +10,7 @@ class Route
     public $method;
     public $name;
     public $callback;
+    public $comment;
 
     public function __construct($path, $method, $callback)
     {
@@ -17,6 +18,10 @@ class Route
         $this->method = $method;
 
         $this->callback = $callback;
+    }
+    public function comment($commentaire)
+    {
+        $this->comment = $commentaire;
     }
     /**
      * the function which start a action 
@@ -26,7 +31,7 @@ class Route
      * @param [type] $next
      * @return void
      */
-    public function handle($req, $res, $next)
+    public function handle(Request $req, Response $res, $next)
     {
         if (is_array($this->callback)) {
             $reflect = new ReflectionClass($this->callback[0]);
@@ -35,16 +40,7 @@ class Route
             if ($reflect->hasMethod($this->callback[1])) {
                 return (new $classe())->$funcName($req, $res, $next);
             } else {
-                $res->status(500)->send('
-                
-                <p style="margin: 100px 10%">
-                    <b style="color: #ff000d;">Error</b>:  the controller <strong>' . $classe . '</strong> has not a method called : <strong>' . $funcName . '</strong>
-                    <br>
-                    <br>
-                    <b style="color: tomato">Please fix this bug</b>
-                </p>
-
-                ');
+                $res->status(404)->sendJson(["error" => "undefined method " . $funcName]);
             }
         } else if (is_callable($this->callback)) {
             $callback = $this->callback;

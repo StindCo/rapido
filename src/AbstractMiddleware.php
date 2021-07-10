@@ -2,6 +2,7 @@
 
 namespace StindCo\Rapido;
 
-class AbstractMiddleware extends AbstractPipelineClass
+abstract class AbstractMiddleware extends AbstractPipelineClass
 {
+    abstract public function handle($req, $res, $next);
 }

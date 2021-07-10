@@ -9,10 +9,11 @@ class App implements ArrayAccess
     protected Configs $configs;
     protected Request $request;
     protected Response $response;
+    protected Router $router;
     protected Pipeline $pipeline;
     protected Middleware $middleware;
     protected array $env;
-
+    protected array $groups = [];
     public function __construct()
     {
         $this->configs = new Configs;
@@ -23,6 +24,11 @@ class App implements ArrayAccess
 
         $this->middleware = new Middleware($this->request, $this->response);
         $this->router = new Router($this->request, $this->response);
+    }
+
+    public function get_version()
+    {
+        return "v1.0.0";
     }
     /*
         ==================================================================
@@ -87,6 +93,7 @@ class App implements ArrayAccess
     {
         return is_null($this->getVar($offset));
     }
+
     public function offsetUnset($offset)
     {
         unset($this->env[$offset]);
@@ -96,8 +103,8 @@ class App implements ArrayAccess
                         Middleware Architecture Pipeline
         ======================================================================
     */
-    /**
-22
+
+    /** 
      * Add middleware 
      *
      * @param mixed $classe
@@ -114,34 +121,40 @@ class App implements ArrayAccess
                             Routes Architecture
         =======================================================================
     */
-    public function get($route, $callback)
+    public function get($route, $callback, $commentaire = null)
     {
         $this->router->routes['get'][$route] = new Route($route, 'get',  $callback);
+        $this->router->routes['get'][$route]->comment($commentaire);
         return $this;
     }
-    public function post($route, $callback)
+    public function post($route, $callback, $commentaire = null)
     {
         $this->router->routes['post'][$route] = new Route($route, 'post',  $callback);
+        $this->router->routes['post'][$route]->comment($commentaire);
         return $this;
     }
-    public function delete($route, $callback)
+    public function delete($route, $callback, $commentaire = null)
     {
         $this->router->routes['delete'][$route] = new Route($route, 'delete',  $callback);
+        $this->router->routes['delete'][$route]->comment($commentaire);
         return $this;
     }
-    public function update($route, $callback)
+    public function update($route, $callback, $commentaire = null)
     {
         $this->router->routes['update'][$route] = new Route($route, 'update',  $callback);
+        $this->router->routes['update'][$route]->comment($commentaire);
         return $this;
     }
-    public function put($route, $callback)
+    public function put($route, $callback, $commentaire = null)
     {
         $this->router->routes['put'][$route] = new Route($route, 'put',  $callback);
+        $this->router->routes['put'][$route]->comment($commentaire);
         return $this;
     }
-    public function patch($route, $callback)
+    public function patch($route, $callback, $commentaire = null)
     {
         $this->router->routes['patch'][$route] = new Route($route, 'patch',  $callback);
+        $this->router->routes['patch'][$route]->comment($commentaire);
         return $this;
     }
     public function match(array $methods, $name, $callback)
@@ -165,18 +178,35 @@ class App implements ArrayAccess
         return $this;
     }
 
-
-
+    public function group($rootpath)
+    {
+        $this->groups[$rootpath] = new Group($rootpath, $this->router, $this->middleware);
+        return $this->groups[$rootpath];
+    }
 
     public function run()
     {
         $this->router->set_configurations($this->configs->getAll());
-
+        $this->router->set_groups($this->groups);
         $this->configure($this->request);
         $this->configure($this->response);
+        $this->information_route();
 
         $pipeline = (new Pipeline($this->request, $this->response))
             ->pipe($this->middleware)
             ->pipe($this->router);
+    }
+
+    public function information_route()
+    {
+        $req = $this->request;
+        $res = $this->response;
+
+        $this->get("/app_info", function ($req, $res, $next) {
+            return $res->sendJson([
+                "version" => $this->get_version(),
+                "routes" => $this->router->getallroutes()
+            ]);
+        });
     }
 }

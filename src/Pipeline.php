@@ -35,7 +35,12 @@ class Pipeline
         return $this;
     }
 
-    public function handle ($req, $res, $next) {
-        if($this->continue == true) return $next();
+    public function handle($req, $res, $next)
+    {
+        if ($this->continue == true) return $next();
+    }
+    public function canContinue()
+    {
+        return ($this->continue == true) ? true : false;
     }
 }

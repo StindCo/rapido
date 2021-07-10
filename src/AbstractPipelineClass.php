@@ -2,12 +2,10 @@
 
 namespace StindCo\Rapido;
 
-class AbstractPipelineClass
+abstract class AbstractPipelineClass
 {
     public Request $req;
     public Response $res;
 
-    public function handle($req, $res, $next) {
-
-    }
+    abstract public function handle($req, $res, $next);
 }
