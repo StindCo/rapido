@@ -34,7 +34,6 @@ class Request extends Http
 
     public function get_putData()
     {
-        
     }
 
     public function get_method()

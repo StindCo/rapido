@@ -45,7 +45,7 @@ class Router extends Pipeline
      * @param [type] $path
      * @return void
      */
-    private function path_resolver($method, $path)
+    private function path_resolver($method, string $path)
     {
         $parameters = null;
         $urlData = explode("/", $path);
@@ -136,6 +136,9 @@ class Router extends Pipeline
         $this->method =  strtolower($req->get_method());
         $this->url = $req->get_url($this->getConf('route_mode')) ?? '/';
 
+        /**
+         * @var object $route
+         */
         $route = $this->path_resolver($this->method, $this->url);
 
         $this->pipe(function (Request $req, Response $res, $next) use ($route) {

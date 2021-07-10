@@ -9,7 +9,7 @@ class Data implements ArrayAccess
     protected $asDataError = false;
     protected array $DataErrors = [];
     protected array $DataSafeInformations = [];
-    
+
     public function setErrors(array $errors): self
     {
         $this->asDataError = true;
@@ -23,7 +23,7 @@ class Data implements ArrayAccess
      *
      * @return self
      */
-    public function getErrors():self
+    public function getErrors(): self
     {
         return (new $this)->setInformations($this->DataErrors);
     }
@@ -53,7 +53,6 @@ class Data implements ArrayAccess
     }
     public function object_to_Data(object $var1)
     {
-        
     }
     public function setInformations(array $data): self
     {
