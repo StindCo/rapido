@@ -126,9 +126,9 @@ class Router extends Pipeline
     /**
      * the function which used for start an action
      *
-     * @param [type] $req
-     * @param [type] $res
-     * @param [type] $next
+     * @param Request $req
+     * @param Response $res
+     * @param Callable $next
      * @return void
      */
     public function handle($req, $res, $next)
