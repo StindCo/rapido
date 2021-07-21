@@ -5,7 +5,6 @@ namespace StindCo\Rapido;
 class Group
 {
     protected $rootpath;
-    private $routes;
     public array $middlewares = [];
 
     public function __construct($rootpath, $router, $middleware)

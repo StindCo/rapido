@@ -43,14 +43,13 @@ $app->use(function ($req, $res, $next) use ($app) {
 
 $groupPrivate = $app->group('/home');
 
-$groupPrivate->get('/home', function (Request $req, Response $res, $next) {
+$groupPrivate->get('/', function (Request $req, Response $res, $next) {
     $res->send("<h1>Bonjour bro </h1>");
 });
 
 
 
 $app->get('/', function ($req, $res, $next) use ($app) {
-    var_dump($_SERVER);
     $res->sendJson(["message" => "Bonjour bro !"]);
 }, 'Cette route permet d\'avoir accès aux datas');
 

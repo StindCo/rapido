@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '8ffc248f6b28208589537221dd252bec8b5a8e5d',
+    'reference' => 'c1fc6beef0def5eb16bd944a53160bc17dfd7d57',
     'name' => 'stindco/rapido',
   ),
   'versions' => 
@@ -31,7 +31,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '8ffc248f6b28208589537221dd252bec8b5a8e5d',
+      'reference' => 'c1fc6beef0def5eb16bd944a53160bc17dfd7d57',
     ),
   ),
 );
