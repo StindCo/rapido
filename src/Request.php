@@ -42,7 +42,7 @@ class Request extends Http
     }
     public function get_url($route_mode)
     {
-        if ($route_mode == '/') return $this->get("PATH_INFO");
+        if ($route_mode == '/') return $this->get("REQUEST_URI");
         else {
             $controller = $_GET['component'];
             $action = $_GET["action"];
