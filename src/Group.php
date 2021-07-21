@@ -11,7 +11,7 @@ class Group
     public function __construct($rootpath, $router, $middleware)
     {
         $this->rootpath = $rootpath;
-        $this->router = $router;
+        $this->router   = $router;
     }
 
     public function use($middleware)

@@ -5,15 +5,25 @@ namespace StindCo\Rapido;
 class Router extends Pipeline
 {
     public array $routes = [
-        'get' => []
+        'get'    => [],
+        'post'   => [],
+        'delete' => [],
+        'put'    => [],
+        'update' => [],
+        'head'   => []
     ];
     private array $conditions = [];
-    private array $configs = [
+    private array $configs    = [
         "route_mode" => "/"
     ];
     protected $groups;
     protected $middleware;
-
+    /**
+     * 
+     *
+     * @param array $configs
+     * @return void
+     */
     public function set_configurations(array $configs)
     {
         foreach ($configs as $key => $value) {
@@ -23,10 +33,10 @@ class Router extends Pipeline
         }
     }
     /**
-     * fonction pour modifier une configuration
+     * 
      *
      * @param string $a
-     * @return void
+     * @return mixed
      */
     private function getConf(string $a)
     {
@@ -42,13 +52,13 @@ class Router extends Pipeline
      * La fonction qui permet de traiter une url
      *
      * @param [type] $method
-     * @param [type] $path
+     * @param string $path
      * @return void
      */
     private function path_resolver($method, string $path)
     {
         $parameters = null;
-        $urlData = explode("/", $path);
+        $urlData    = explode("/", $path);
         foreach ($this->routes[$method] as $key => $value) {
             $routesData = explode("/", $key);
             if (count($routesData) == count($urlData)) {
@@ -82,9 +92,8 @@ class Router extends Pipeline
                         }
                     }
 
-
                     $this->routeParams = $parameters;
-                    $callback = $value;
+                    $callback          = $value;
                     break;
                 }
             } else {
@@ -105,13 +114,20 @@ class Router extends Pipeline
 
         return $arrays;
     }
+    
     public function set_groups(array $groups)
     {
         $this->groups = $groups;
     }
-
+    /**
+     *  Une fonction qui permet de déterminer le groupe d'une route
+     *
+     * @param [type] $route
+     * @return void
+     */
     private function whats_groups($route)
     {
+        $groupe = null;
         if (is_null($route)) return null;
 
         foreach ($this->groups as $key => $value) {
@@ -133,20 +149,38 @@ class Router extends Pipeline
      */
     public function handle($req, $res, $next)
     {
-        $this->method =  strtolower($req->get_method());
-        $this->url = $req->get_url($this->getConf('route_mode')) ?? '/';
+        $this->method = strtolower($req->get_method());
+        $this->url    = $req->get_url($this->getConf('route_mode')) ?? '/';
 
         /**
          * @var object $route
          */
         $route = $this->path_resolver($this->method, $this->url);
-
+        /**
+         * Le routeur en interne contient un middleware ayant aussi un middleware
+         * @see Middleware.php 
+         * @see Pipeline.php
+         */
         $this->pipe(function (Request $req, Response $res, $next) use ($route) {
-            $group = $this->whats_groups($route);
+            /**
+             * on récupère le groupe qu'appartient la route
+             * @var object $group
+             */
+            $group = $this->whats_groups($route); // on détermine le groupe de la route
+            /**
+             * Si le groupe est inexistant ou alors n'as pas des middlewares, on passe à l'étape suivant
+             */
             if (is_null($group) or $group->middlewares == []) return $next();
-            $middleware = new Middleware($req, $res);
+            $middleware = new Middleware($req, $res); // on crée un nouveau middleware
+            /**
+             * @see Pipeline.php
+             * on va piper les différentes Handle
+             */
             for ($i = 0; $i < count($group->middlewares); $i++) {
-
+                /**
+                 * @var mixed $continuation
+                 * on recupère le dernier pipe
+                 */
                 $continuation = $middleware->pipe($group->middlewares[$i]);
             }
             if ($continuation->canContinue()) return $next();
@@ -154,7 +188,7 @@ class Router extends Pipeline
             ->pipe(function ($req, $res, $next) use ($route) {
                 if (($route) != NULL) {
                     $req->routeParams = $this->routeParams;
-                    $req->route = $route;
+                    $req->route       = $route;
                     return $route->handle($req, $res, $next);
                 } else {
                     if (!is_null($this->routes['otherwise'])) {
