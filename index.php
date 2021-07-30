@@ -1,62 +1,48 @@
 <?php
-
 use StindCo\Rapido\App;
 use StindCo\Rapido\Request;
 use StindCo\Rapido\Response;
 
-require './vendor/autoload.php';
+require "./vendor/autoload.php";
+error_reporting(0);
+ $app = new App();
 
-$app = new App();
-/**
- * ============================================
- *      Définition des configurations
- * ============================================
- */
-$app->config("route_mode", "/");
+// Créer une route c'est simple 
 
-/**
- * ============================================
- *      Les middlewares
- * ============================================
- */
-
-$app->use(function ($req, $res, $next) use ($app) {
-    $app['nom'] = 'Stéphane Ngoyi';
-    return $next();
+$app->get("/", function (Request $req, Response $res, Callable $next) {
+    // Il va afficher "je suis stéphane" si l'url est de "http://nomdedomaine.com/
+    echo "Je suis stéphane ";
 });
 
-$app->use(function ($req, $res, $next) use ($app) {
-    $app['password'] = 'motdepasse';
-    return $next();
-});
-$app->use(function ($req, $res, $next) use ($app) {
-    if ($app['password'] == "motdepasse") {
-        return $next();
+//on va créer une autre route
+
+$app->post("/salutation", function(Request $req, Response $res, Callable $next){
+    /**
+     * On va créer une mini api 
+     * on récupère le nom dans les params 
+     */
+/*     $nom = $req->get_getDatas()->nom;
+    if(is_null($nom)) {
+        return $res->send("Tu n'as pas mis ton nom");
     }
-    $res->status(401)->sendJson(["error"  => "Ton mot de passe n'est pas correct "]);
+    elseif($nom == "voldie") {
+        $res->send("Salut gros !");
+    }
+    $res->send("Bonjour {$nom}");
+    */
+    $method = $req->get("DOCUMENT_ROOT"); // tu peux recupérer automatiquement en Poo tous les élements du $_SERVER
+    // Pas mal hein ...
+    $res->send($method);
 });
 /**
- * ============================================
- *      Le routage
- * ============================================
+ * Il existe aussi
+ * $req->get_postDatas() pour récuperer les données envoyés via un formulaire, ou par le méthode Post
+ * $req->get_putDatas() Pour les données envoyés via la méthode PUT
  */
 
-$groupPrivate = $app->group('/home');
-
-$groupPrivate->get('/', function (Request $req, Response $res, $next) {
-    $res->send("<h1>Bonjour bro </h1>");
-});
 
 
 
-$app->get('/', function ($req, $res, $next) use ($app) {
-    $res->sendJson(["message" => "Bonjour bro !"]);
-}, 'Cette route permet d\'avoir accès aux datas');
-
-/**
- * ============================================
- *      Lancer l'application
- * ============================================
- */
+// Ensuite il faut lancer l'application
 
 $app->run();
