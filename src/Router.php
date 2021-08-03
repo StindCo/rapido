@@ -114,7 +114,7 @@ class Router extends Pipeline
 
         return $arrays;
     }
-    
+
     public function set_groups(array $groups)
     {
         $this->groups = $groups;
