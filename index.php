@@ -32,7 +32,7 @@ $app->post("/salutation", function(Request $req, Response $res, Callable $next){
     */
     $method = $req->get("DOCUMENT_ROOT"); // tu peux recupérer automatiquement en Poo tous les élements du $_SERVER
     // Pas mal hein ...
-    $res->send($method);
+    $res->send();
 });
 /**
  * Il existe aussi
@@ -44,5 +44,9 @@ $app->post("/salutation", function(Request $req, Response $res, Callable $next){
 
 
 // Ensuite il faut lancer l'application
+$app->post("/", function(Request $req, $res, $next) {
+    
+    return $res->sendJson(["data"=> "Tu es ". $req->get_putData()->username . " et ton password est " . $req->get_putData()->password]);
+});
 
 $app->run();

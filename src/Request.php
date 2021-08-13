@@ -34,6 +34,8 @@ class Request extends Http
 
     public function get_putData()
     {
+        $data = file_get_contents("php://input");
+        return json_decode($data);
     }
 
     public function get_method()
