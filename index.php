@@ -46,7 +46,7 @@ $app->post("/salutation", function(Request $req, Response $res, Callable $next){
 // Ensuite il faut lancer l'application
 $app->post("/", function(Request $req, $res, $next) {
     
-    return $res->sendJson(["data"=> "Tu es ". $req->get_putData()->username . " et ton password est " . $req->get_putData()->password]);
+    return $res->sendJson(["data"=> "Tu es ". $req->inputData()->username . " et ton password est " . $req->inputData()->password]);
 });
 
 $app->run();
