@@ -80,7 +80,10 @@ class Data implements ArrayAccess
     {
         if (!is_null($this->$offset)) unset($this->$offset);
     }
-
+    public function get($key)
+    {
+        return $this->$key;
+    }
     public function toArray()
     {
         return $this->DataSafeInformations;

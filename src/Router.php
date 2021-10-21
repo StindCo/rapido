@@ -141,7 +141,16 @@ class Router extends Pipeline
 
     /**
      * the function which used for start an action
-     *
+     * 
+     * Pour mieux comprendre le fonctionnnement de cette fonction, il faut comprendre l'utilisation @see Middleware 
+     * @see Pipeline
+     * 
+     */
+     
+     
+    /**
+     * Cette fonction est la principale de cette classe,
+     * son fonction est semblable à celui du middleware  
      * @param Request $req
      * @param Response $res
      * @param Callable $next

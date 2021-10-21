@@ -1,52 +1,34 @@
 <?php
+
 use StindCo\Rapido\App;
 use StindCo\Rapido\Request;
 use StindCo\Rapido\Response;
 
+error_reporting(0); // faute de compatibilité 
+// on charge Le composer autoload
 require "./vendor/autoload.php";
-error_reporting(0);
- $app = new App();
-
-// Créer une route c'est simple 
-
-$app->get("/", function (Request $req, Response $res, Callable $next) {
-    // Il va afficher "je suis stéphane" si l'url est de "http://nomdedomaine.com/
-    echo "Je suis stéphane ";
-});
-
-//on va créer une autre route
-
-$app->post("/salutation", function(Request $req, Response $res, Callable $next){
-    /**
-     * On va créer une mini api 
-     * on récupère le nom dans les params 
-     */
-/*     $nom = $req->get_getDatas()->nom;
-    if(is_null($nom)) {
-        return $res->send("Tu n'as pas mis ton nom");
-    }
-    elseif($nom == "voldie") {
-        $res->send("Salut gros !");
-    }
-    $res->send("Bonjour {$nom}");
-    */
-    $method = $req->get("DOCUMENT_ROOT"); // tu peux recupérer automatiquement en Poo tous les élements du $_SERVER
-    // Pas mal hein ...
-    $res->send();
-});
 /**
- * Il existe aussi
- * $req->get_postDatas() pour récuperer les données envoyés via un formulaire, ou par le méthode Post
- * $req->get_putDatas() Pour les données envoyés via la méthode PUT
+ * on crée l'application 
+ * @var StindCo\Rapido\App $app 
  */
-
-
-
-
-// Ensuite il faut lancer l'application
-$app->post("/", function(Request $req, $res, $next) {
+$app = new App();
+// un routeur
+$app->get("/user", function (Request $req,Response $res, $next) {
+    $data = [
+        'stephane' => [
+            'sexe' => "M",
+            'nom' => "Ngoyi",
+            'Classe' => "Seconde",
+            'Age' => 15,
+        ]
+    ];
+    // on récupère la query (le paramètre)
+    $name = $req->query('name');
     
-    return $res->sendJson(["data"=> "Tu es ". $req->inputData()->username . " et ton password est " . $req->inputData()->password]);
+    if(is_array($data[$name])) {
+        return $res->status(200)->sendJson($data[$name]);
+    } 
+    return $res->status(404)->sendJson(['error_message' => "votre nom est inconnu"]);
 });
-
+// on lance l'application
 $app->run();

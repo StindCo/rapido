@@ -17,22 +17,25 @@ class Request extends Http
         return $this->DataSafeInformations[$key];
     }
 
-    public function query():Data
+    public function query($key = null): Data | string | null
     {
-        return (new Data())->setInformations($_GET);
+        if (is_null($key)) {
+            return (new Data())->setInformations($_GET);
+        }
+        return (new Data())->setInformations($_GET)->get($key);
     }
 
-    public function form():Data
+    public function form(): Data
     {
         return (new Data())->setInformations($_POST);
     }
 
-    public function files():Data
+    public function files(): Data
     {
         return (new Data())->setInformations($_FILES);
     }
 
-    public function inputData():object
+    public function inputData(): object
     {
         $data = file_get_contents("php://input");
         return json_decode($data);

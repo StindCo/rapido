@@ -14,6 +14,7 @@ class App implements ArrayAccess
     protected Middleware $middleware;
     protected array $env;
     protected array $groups = [];
+
     public function __construct()
     {
         $this->configs = new Configs;
