@@ -78,8 +78,8 @@ class Router extends Pipeline
 
                 if ($ok == true) {
                     $conditions = true;
-
-                    if (!is_null($this->conditions[$method])) {
+                    
+                    if (array_key_exists($method, $this->conditions)) {
                         if (key_exists($key, $this->conditions[$method])) {
                             foreach ($this->conditions[$method][$key] as $k => $condition) {
                                 if (!preg_match($condition, $parameters[$k])) $conditions = false;

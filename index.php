@@ -4,7 +4,6 @@ use StindCo\Rapido\App;
 use StindCo\Rapido\Request;
 use StindCo\Rapido\Response;
 
-error_reporting(0); // faute de compatibilité 
 // on charge Le composer autoload
 require "./vendor/autoload.php";
 /**
@@ -13,6 +12,10 @@ require "./vendor/autoload.php";
  */
 $app = new App();
 // un routeur
+$app->get("/", function(Request $req, Response $res, callable $next) {
+    return $res->send("Hello world");
+});
+
 $app->get("/user", function (Request $req,Response $res, $next) {
     $data = [
         'stephane' => [

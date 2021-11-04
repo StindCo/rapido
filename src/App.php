@@ -3,13 +3,47 @@
 namespace StindCo\Rapido;
 
 use ArrayAccess;
-
+/**
+ * La classe App est la principale du projet 
+ * Une fois instanciée, c'est dans cette classe que toute les processus de l'application pourront être lancer
+ * @implements ArrayAccess
+ * @see StindCo\Rapido
+ */
 class App implements ArrayAccess
 {
+    /**
+     * Cette propriété contient l'instance de la configuration
+     * Configs est une classe permettant de configurer l'application
+     *
+     * @var Configs $configs
+     */
     protected Configs $configs;
+    /**
+     * La propriété ayant l'instance Request
+     *
+     * @var Request
+     */
     protected Request $request;
+    /**
+     * La propriété ayant l'instance de la Response
+     *
+     * @var Response
+     */
     protected Response $response;
+    /**
+     * L'instance du Router
+     * Le routeur est un Objet important dans le framework
+     * C'est d'ailleurs l'une des principales partis du framework
+     *
+     * @var Router
+     */
     protected Router $router;
+    /**
+     * L'instance de la pipeline
+     * L'implémentation de la chaine de responsabilité
+     *
+     * @var Pipeline
+     */
     protected Pipeline $pipeline;
     protected Middleware $middleware;
     protected array $env;
@@ -63,7 +97,7 @@ class App implements ArrayAccess
     private function configure($objects)
     {
         foreach ($objects->configs as $key => $value) {
-            if (!is_null($this->configs->getAll()[$key])) {
+            if(array_key_exists($key, $this->configs->getAll())) {
                 $objects->configs[$key] = $this->configs->getAll()[$key];
             }
         }
