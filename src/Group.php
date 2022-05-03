@@ -83,16 +83,6 @@ class Group
         $this->router->routes['patch'][$route]->comment($commentaire);
         return $this;
     }
-    public function match(array $methods, $name, $callback)
-    {
-        if ($name == "/") $name = $this->rootpath;
-        else {
-            $name = $this->rootpath . $name;
-        }
-        foreach ($methods as $value) {
-            $this->router->routes[strtolower($value)][$name] = new Route($name, strtolower($value),  $callback);
-        }
-    }
     public function where($array)
     {
         $method = array_key_last($this->router->routes);

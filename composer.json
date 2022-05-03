@@ -1,7 +1,7 @@
 {
     "name": "stindco/rapido",
     "description": "Mini php framework based on stinder",
-    "type": "project",
+    "type": "project",  
     "authors": [
         {
             "name": "Stéphane Ngoyi",
