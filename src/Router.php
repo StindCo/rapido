@@ -57,6 +57,7 @@ class Router extends Pipeline
      */
     private function path_resolver($method, string $path)
     {
+        $callback = null;
         $parameters = null;
         $urlData    = explode("/", $path);
         foreach ($this->routes[$method] as $key => $value) {
