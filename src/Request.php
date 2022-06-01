@@ -25,14 +25,21 @@ class Request extends Http
         return (new Data())->setInformations($_GET)->get($key);
     }
 
-    public function form(): Data
+    public function form($key = null): Data | string | null
     {
-        return (new Data())->setInformations($_POST);
+        if (is_null($key)) {
+            return (new Data())->setInformations($_POST);
+        }
+        return (new Data())->setInformations($_POST)->get($key);
     }
 
-    public function files(): Data
+    public function files($key = null): Data | string | null
     {
-        return (new Data())->setInformations($_FILES);
+        if (is_null($key)) {
+            return (new Data())->setInformations($_FILES);
+        }
+
+        return (new Data())->setInformations($_FILES)->get($key);
     }
 
     public function inputData(): object

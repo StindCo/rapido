@@ -12,7 +12,7 @@ class Pipeline
 
         $this->next();
     }
-    private function next()
+    private function next(): void
     {
         $this->continue = true;
     }

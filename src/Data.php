@@ -53,6 +53,7 @@ class Data implements ArrayAccess
     }
     public function object_to_Data(object $var1)
     {
+        
     }
     public function setInformations(array $data): self
     {
@@ -62,7 +63,7 @@ class Data implements ArrayAccess
         }
         return $this;
     }
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if (isset($this->$offset)) return true;
         return false;
@@ -71,12 +72,12 @@ class Data implements ArrayAccess
     {
         return $this->$offset;
     }
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->DataSafeInformations[$offset] = $value;
         $this->$offset = $value;
     }
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (!is_null($this->$offset)) unset($this->$offset);
     }
