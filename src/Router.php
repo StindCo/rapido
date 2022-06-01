@@ -19,7 +19,7 @@ class Router extends Pipeline
     protected $groups;
     protected $middleware;
     /**
-     *
+     * 
      *
      * @param array $configs
      * @return void
@@ -33,7 +33,7 @@ class Router extends Pipeline
         }
     }
     /**
-     *
+     * 
      *
      * @param string $a
      * @return mixed
@@ -86,7 +86,7 @@ class Router extends Pipeline
                                 if (!preg_match($condition, $parameters[$k])) $conditions = false;
                                 continue;
                             }
-                            
+
                             if ($conditions == false) {
                                 continue;
                             }
@@ -135,7 +135,6 @@ class Router extends Pipeline
             if (strpos($route->path, $key) === 0) {
                 $groupe = $this->groups[$key];
                 break;
-
             }
         }
         return $groupe;
@@ -143,16 +142,16 @@ class Router extends Pipeline
 
     /**
      * the function which used for start an action
-     *
-     * Pour mieux comprendre le fonctionnnement de cette fonction, il faut comprendre l'utilisation @see Middleware
+     * 
+     * Pour mieux comprendre le fonctionnnement de cette fonction, il faut comprendre l'utilisation @see Middleware 
      * @see Pipeline
-     *
+     * 
      */
 
 
     /**
      * Cette fonction est la principale de cette classe,
-     * son fonction est semblable à celui du middleware
+     * son fonction est semblable à celui du middleware  
      * @param Request $req
      * @param Response $res
      * @param Callable $next
@@ -169,7 +168,7 @@ class Router extends Pipeline
         $route = $this->path_resolver($this->method, $this->url);
         /**
          * Le routeur en interne contient un middleware ayant aussi un middleware
-         * @see Middleware.php
+         * @see Middleware.php 
          * @see Pipeline.php
          */
         $this->pipe(function (Request $req, Response $res, $next) use ($route) {
@@ -202,7 +201,7 @@ class Router extends Pipeline
                     $req->route       = $route;
                     return $route->handle($req, $res, $next);
                 } else {
-                    if (array_key_exists("otherwise",$this->routes)) {
+                    if (array_key_exists("otherwise", $this->routes)) {
                         return $this->routes['otherwise']->handle($req, $res, $next);
                     } else {
                         $res->status(404)->sendJson(["error" => "This route don't exits"]);

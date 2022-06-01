@@ -38,7 +38,7 @@ class Route
             $classe = $this->callback[0];
             $funcName = $this->callback[1];
             if ($reflect->hasMethod($this->callback[1])) {
-                return (new $classe())->$funcName($req, $res, $next);
+                return (new $classe($req, $res))->$funcName($req, $res, $next);
             } else {
                 $res->status(404)->sendJson(["error" => "undefined method " . $funcName]);
             }

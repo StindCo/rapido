@@ -3,14 +3,13 @@
 namespace StindCo\Rapido;
 
 use ArrayAccess;
-
 /**
  * La classe App est la principale du projet 
  * Une fois instanciée, c'est dans cette classe que toute les processus de l'application pourront être lancer
  * @implements ArrayAccess
  * @see StindCo\Rapido
  */
-class App
+class App implements ArrayAccess
 {
     /**
      * Cette propriété contient l'instance de la configuration
@@ -98,7 +97,7 @@ class App
     private function configure($objects)
     {
         foreach ($objects->configs as $key => $value) {
-            if (array_key_exists($key, $this->configs->getAll())) {
+            if(array_key_exists($key, $this->configs->getAll())) {
                 $objects->configs[$key] = $this->configs->getAll()[$key];
             }
         }
@@ -121,9 +120,18 @@ class App
     {
         return $this->getVar($offset);
     }
+    public function offsetSet($offset, $value)
+    {
+        $this->setVar($offset, $value);
+    }
+    public function offsetExists($offset)
+    {
+        return is_null($this->getVar($offset));
+    }
 
-    public function offsetExists(){
-        
+    public function offsetUnset($offset)
+    {
+        unset($this->env[$offset]);
     }
     /*
         =======================================================================
@@ -183,6 +191,12 @@ class App
         $this->router->routes['patch'][$route] = new Route($route, 'patch',  $callback);
         $this->router->routes['patch'][$route]->comment($commentaire);
         return $this;
+    }
+    public function match(array $methods, $name, $callback)
+    {
+        foreach ($methods as $value) {
+            $this->router->routes[strtolower($value)][$name] = new Route($name, strtolower($value),  $callback);
+        }
     }
     public function where($array)
     {
