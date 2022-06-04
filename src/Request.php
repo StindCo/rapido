@@ -42,10 +42,11 @@ class Request extends Http
         return (new Data())->setInformations($_FILES)->get($key);
     }
 
-    public function inputData(): object
+    public function input($key = null): Data | string | null
     {
         $data = file_get_contents("php://input");
-        return json_decode($data);
+        $data = json_decode($data, true);
+        return (new Data())->setInformations($data)->get($key);
     }
 
     public function get_method()
