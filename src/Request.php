@@ -2,6 +2,8 @@
 
 namespace StindCo\Rapido;
 
+use Exception;
+
 class Request extends Http
 {
     public Route $route;
@@ -45,9 +47,15 @@ class Request extends Http
     public function input($key = null): Data | string | null
     {
         $data = file_get_contents("php://input");
-        $data = json_decode($data, true);
+        try {
+            $data = json_decode($data, true);
+        } catch (\Throwable $th) {
+            throw new UserException("Error on your JSON data");
+        }
+        if (is_null($data)) throw new UserException("There's an error with your JSON.");
+
         if (is_null($key)) return (new Data())->setInformations($data);
-        
+
         return (new Data())->setInformations($data)->get($key);
     }
 

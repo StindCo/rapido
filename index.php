@@ -21,9 +21,13 @@ $users = [
     ]
 ];
 
+$app->get("/", function (Request $req, Response $res) {
+    $input = $req->input();
+
+    return $res->sendJson(['message' => $input]);
+});
 
 $userManagementApp = $app->group('/users');
-
 
 
 // on lance l'application

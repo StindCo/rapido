@@ -227,10 +227,23 @@ class App implements ArrayAccess
         $this->configure($this->request);
         $this->configure($this->response);
         $this->information_route();
+        try {
 
-        $pipeline = (new Pipeline($this->request, $this->response))
-            ->pipe($this->middleware)
-            ->pipe($this->router);
+            $pipeline = (new Pipeline($this->request, $this->response))
+                ->pipe($this->middleware)
+                ->pipe($this->router);
+        } catch (\Throwable $e) {
+            if (get_class($e) == "StindCo\Rapido\UserException") {
+                return $this->response->status(400)->sendJson([
+                    'status' => "error",
+                    'message' => $e->getMessage(),
+                ]);
+            }
+            return $this->response->status(500)->sendJson([
+                'status' => "error",
+                'message' => "internal error",
+            ]);
+        }
     }
 
     public function information_route()
