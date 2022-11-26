@@ -11,46 +11,19 @@ require "./vendor/autoload.php";
  * @var StindCo\Rapido\App $app 
  */
 $app = new App();
-// un routeur
-$app->get("/", function(Request $req, Response $res, callable $next) {
-    return $res->send("Hello world");
-});
 
-$app->get("/user", function (Request $req,Response $res, $next) {
-    $data = [
-        'stephane' => [
-            'sexe' => "M",
-            'nom' => "Ngoyi",
-            'Classe' => "Seconde",
-            'Age' => 15,
-        ]
-    ];
-    // on récupère la query (le paramètre)
-    $name = $req->query('name');
-    
-    if(is_array($data[$name])) {
-        return $res->status(200)->sendJson($data[$name]);
-    } 
-    return $res->status(404)->sendJson(['error_message' => "votre nom est é inconnu"]);
-});
 
-$app->post("/user", function (Request $req,Response $res, $next) {
-    $data = [
-        'stephane1' => [
-            'sexe' => "M",
-            'nom' => "Ngoyi",
-            'Classe' => "Seconde",
-            'Age' => 15,
-        ]
-    ];
-    // on récupère la query (le paramètre)
-    $name = $req->input('name');
-    
-    if(is_array($data[$name])) {
-        return $res->status(200)->sendJson($data[$name]);
-    }
-    return $res->status(404)->sendJson(['error_message' => "votre nom est é inconnu"]);
-});
+$users = [
+    [
+        "name" => "Stéphane Ngoyi",
+        "age" => 20,
+        "email" => "sngoyi5@gmail.com",
+    ]
+];
+
+
+$userManagementApp = $app->group('/users');
+
 
 
 // on lance l'application

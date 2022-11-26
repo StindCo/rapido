@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'StindCo\\Rapido\\' => array($baseDir . '/src'),
+    'Doctrine\\Common\\Cache\\' => array($vendorDir . '/doctrine/cache/lib/Doctrine/Common/Cache'),
 );

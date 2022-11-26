@@ -46,6 +46,8 @@ class Request extends Http
     {
         $data = file_get_contents("php://input");
         $data = json_decode($data, true);
+        if (is_null($key)) return (new Data())->setInformations($data);
+        
         return (new Data())->setInformations($data)->get($key);
     }
 

@@ -83,7 +83,7 @@ class Group
         $this->router->routes['patch'][$route]->comment($commentaire);
         return $this;
     }
-    public function match($methods, $name, $callback)
+    public function matchRequest($methods, $name, $callback)
     {
         if ($name == "/") $name = $this->rootpath;
         else {
